@@ -1,19 +1,21 @@
-apiVersion: argoproj.io/v1alpha1
+---
+
 kind: Application
+apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: my-nginx
+  name: myapp
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
-    targetRevision: HEAD
-    path: manifests/nginx
+    targetRevision: master
+    path: manifests/monitoring
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
   syncPolicy:
     automated:
+      prune: true
       selfHeal: true

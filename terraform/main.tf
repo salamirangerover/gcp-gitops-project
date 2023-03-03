@@ -115,4 +115,14 @@ resource "kubectl_manifest" "malkoapp-wp" {
   yaml_body = element(data.kubectl_file_documents.malkoapp-wp.documents, count.index)
 }
 
+data "kubectl_file_documents" "init_app" {
+  content = file("../manifests/_init/init_app.yaml")
+}
 
+resource "kubectl_manifest" "init_app" {
+  depends_on = [
+    kubectl_manifest.argocd,
+  ]
+  count     = length(data.kubectl_file_documents.init_app.documents)
+  yaml_body = element(data.kubectl_file_documents.init_app.documents, count.index)
+}
