@@ -1,0 +1,46 @@
+---
+kind: Application
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: wordpress
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: wordpress
+    targetRevision: "15.2.2"
+    helm:
+      values: |
+        wordpressUsername: admin
+        wordpressPassword: qwerty
+        wordpressFirstName: Malko
+        wordpressLastName: App
+        wordpressBlogName: Blog
+        service:
+          type: LoadBalancer
+        mariadb:
+          enabled: true
+          architecture: standalone
+          auth:
+            rootPassword: "mariadb"
+            database: bitnami_wordpress
+            username: bn_wordpress
+            password: "mariadb"
+          
+        memcached:
+          enabled: true
+          auth:
+            enabled: true
+            username: "admin"
+            password: "qwerty"
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc    
+
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
