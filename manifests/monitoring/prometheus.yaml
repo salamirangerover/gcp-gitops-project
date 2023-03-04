@@ -1,242 +1,171 @@
----
+apiersion: v1
+kind: Service
 apiVersion: v1
-kind: PersistentVolumeClaim
 metadata:
-  name: pvc-nfs-data
-  namespace: monitoring
   labels:
-    app: prometheus-deployment
-
+    name: prometheus
+  name: prometheus
+  namespace: monitoring
 spec:
-  storageClassName: managed-nfs
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 500Mi
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: prometheus
-rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - services
-  - endpoints
-  - pods
-  verbs: ["get", "list", "watch"]
-- apiGroups:
-  - extensions
-  resources:
-  - ingresses
-  verbs: ["get", "list", "watch"]
-
----
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: prometheus
-  namespace: monitoring
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: prometheus
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: prometheus
-subjects:
-- kind: ServiceAccount
-  name: prometheus
-  namespace: monitoring
-
+  selector:
+    app: prometheus
+  type: ClusterIP
+  ports:
+  - name: prometheus
+    protocol: TCP
+    port: 9090
 ---
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-  namespace: monitoring
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval:     15s
-      evaluation_interval: 15s
-    alerting:
-      alertmanagers:
-      - static_configs:
-        - targets:
-    rule_files:
-      # - "example-file.yml"
-    scrape_configs:
-      - job_name: 'prometheus'
-        static_configs:
-        - targets: ['localhost:9090']
-     
-       - job_name: 'kubelet'
-        kubernetes_sd_configs:
-        - role: node
-        scheme: https
-        tls_config:
-          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      
-      - job_name: 'cadvisor'
-        kubernetes_sd_configs:
-        - role: node
-        scheme: https
-        tls_config:
-          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        metrics_path: /metrics/cadvisor
-
-      - job_name: 'k8pods'
-        kubernetes_sd_configs:
-        - role: pod
-        relabel_configs:
-        - source_labels: [__meta_kubernetes_pod_container_port_name]
-          regex: metrics
-          action: keep
-        - source_labels: [__meta_kubernetes_pod_container_name]
-          target_label: job
-
-      - job_name: 'k8apiserver'
-        kubernetes_sd_configs:
-        - role: endpoints
-        scheme: https
-        tls_config:
-          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        relabel_configs:
-        - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-          action: keep
-          regex: default;kubernetes;https
-
-
-      - job_name: 'k8services'
-        kubernetes_sd_configs:
-        - role: endpoints
-        relabel_configs:
-        - source_labels:
-          - __meta_kubernetes_namespace
-          - __meta_kubernetes_service_name
-          action: drop
-          regex: default;kubernetes
-        - source_labels:
-          - __meta_kubernetes_namespace
-          regex: default
-          action: keep
-        - source_labels: [__meta_kubernetes_service_name]
-          target_label: job            
-            
----
-
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: prometheus
-  namespace: monitoring
   labels:
     app: prometheus
+  name: prometheus
 spec:
   replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
   selector:
     matchLabels:
       app: prometheus
   template:
     metadata:
+      name: prometheus
       labels:
         app: prometheus
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
+        prometheus.io/scrape: 'true'
     spec:
+      # Needed when using unmodified rbac-setup.yml
+      serviceAccountName: prometheus
       containers:
       - name: prometheus
-        image: prom/prometheus
-        args:
-          - '--storage.tsdb.retention=6h'
-          - '--storage.tsdb.path=/prometheus'
-          - '--config.file=/etc/prometheus/prometheus.yml'
+        image: gcr.io/stackdriver-prometheus/stackdriver-prometheus:release-0.4.1
+        # Uncomment this to enable debug logs. Can be very verbose.
+        #args: ["--config.file=/etc/prometheus/prometheus.yml", "--log.level=debug"]
+        # Helps during development, when reusing the tag.
+        imagePullPolicy: Always
         ports:
         - name: web
           containerPort: 9090
         volumeMounts:
-        - name: prometheus-config-volume
+        - name: config-volume
           mountPath: /etc/prometheus
-        - name: prometheus-storage-volume
-          mountPath: /prometheus
-      restartPolicy: Always
       volumes:
-      - name: prometheus-config-volume
+      - name: config-volume
         configMap:
-            defaultMode: 420
-            name: prometheus-config
-      - name: prometheus-storage-volume
-        persistentVolumeClaim:
-            claimName: pvc-nfs-data
-
+          name: prometheus
 ---
 apiVersion: v1
-kind: Service
-metadata:
-    name: prometheus-service
-    namespace: monitoring
-    annotations:
-        prometheus.io/scrape: 'true'
-        prometheus.io/port:   '9090'
-spec:
-    selector:
-        app: prometheus
-    type: NodePort
-    ports:
-    - port: 8080
-      targetPort: 9090
-      nodePort: 30909
-
-
----
-apiVersion: apps/v1beta2
-kind: Deployment
-metadata:
-  name: kube-state-metrics
-  namespace: monitoring
-spec:
-  selector:
-    matchLabels:
-      app: kube-state-metrics
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: kube-state-metrics
-    spec:
-      serviceAccountName: prometheus
-      containers:
-      - name: kube-state-metrics
-        image: quay.io/coreos/kube-state-metrics:v1.2.0
-        ports:
-        - containerPort: 8080
-          name: monitoring
----
-kind: Service
+kind: ConfigMap
 apiVersion: v1
+data:
+  prometheus.yml: |
+    # Source: https://github.com/stackdriver/prometheus/blob/master/documentation/examples/prometheus.yml
+    global:
+      external_labels:
+        _stackdriver_project_id: '[PROJECT_ID]'
+        _kubernetes_cluster_name: '[CLUSTER_NAME]'
+        _kubernetes_location: '[CLUSTER_ZONE]'
+    # Scrape config for nodes (kubelet).
+    #
+    # Rather than connecting directly to the node, the scrape is proxied though the
+    # Kubernetes apiserver.  This means it will work if Prometheus is running out of
+    # cluster, or can't connect to nodes for some other reason (e.g. because of
+    # firewalling).
+    scrape_configs:
+    - job_name: 'kubernetes-nodes'
+      # Default to scraping over https. If required, just disable this or change to
+      # `http`.
+      scheme: https
+      # This TLS & bearer token file config is used to connect to the actual scrape
+      # endpoints for cluster components. This is separate to discovery auth
+      # configuration because discovery & scraping are two separate concerns in
+      # Prometheus. The discovery auth config is automatic if Prometheus runs inside
+      # the cluster. Otherwise, more config options have to be provided within the
+      # <kubernetes_sd_config>.
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics
+    # Example scrape config for pods
+    #
+    # The relabeling allows the actual pod scrape endpoint to be configured via the
+    # following annotations:
+    #
+    # * `prometheus.io/scrape`: Only scrape pods that have a value of `true`
+    # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
+    # * `prometheus.io/port`: Scrape the pod on the indicated port instead of the
+    # pod's declared ports (default is a port-free target if none are declared).
+    - job_name: 'kubernetes-pods-containers'
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+    # Scrape config for service endpoints.
+    #
+    # The relabeling allows the actual service scrape endpoint to be configured
+    # via the following annotations:
+    #
+    # * `prometheus.io/scrape`: Only scrape services that have a value of `true`
+    # * `prometheus.io/scheme`: If the metrics endpoint is secured then you will need
+    # to set this to `https` & most likely set the `tls_config` of the scrape config.
+    # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
+    # * `prometheus.io/port`: If the metrics are exposed on a different port to the
+    # service then set this appropriately.
+    - job_name: 'kubernetes-service-endpoints'
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        action: replace
+        target_label: __scheme__
+        regex: (https?)
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+    remote_write:
+    - url: "https://monitoring.googleapis.com:443/"
+      queue_config:
+        # Capacity should be 2*max_samples_per_send.
+        capacity: 400
+        max_samples_per_send: 200
+        max_shards: 10000
+      write_relabel_configs:
+      # These labels are generally redundant with the Stackdriver monitored resource labels.
+      - source_labels: [job]
+        target_label: job
+        replacement: ""
+      - source_labels: [instance]
+        target_label: instance
+        replacement: ""
 metadata:
-  name: kube-state-metrics
-  namespace: monitoring
-spec:
-  selector:
-    app: kube-state-metrics
-  type: LoadBalancer
-  ports:
-  - protocol: TCP
-    port: 8080
-    targetPort: 8080
+  name: prometheus
+  namespace: default
