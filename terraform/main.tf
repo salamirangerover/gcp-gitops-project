@@ -118,10 +118,6 @@ resource "kubectl_manifest" "malkoapp-wp" {
 
 ### init_monitoring_app
 
-data "kubectl_file_documents" "monitoring_namespace" {
-  content = file("../manifests/monitoring/namespace.yaml")
-}
-
 data "kubectl_file_documents" "init_app" {
   content = file("../manifests/_init/init_app.yaml")
 }
