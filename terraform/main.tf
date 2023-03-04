@@ -129,6 +129,5 @@ resource "kubectl_manifest" "init_app" {
   ]
   count              = length(data.kubectl_file_documents.init_app.documents)
   yaml_body          = element(data.kubectl_file_documents.init_app.documents, count.index)
-  override_namespace = "monitoring"
 
 }

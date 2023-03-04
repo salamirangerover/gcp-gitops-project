@@ -3,7 +3,7 @@
 kind: Application
 apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: init_app
+  name: init-app
   namespace: argocd
 spec:
   project: default
