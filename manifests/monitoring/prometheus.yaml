@@ -208,6 +208,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: kube-state-metrics
+  namespace: monitoring
 spec:
   selector:
     matchLabels:
@@ -230,6 +231,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: kube-state-metrics
+  namespace: monitoring
 spec:
   selector:
     app: kube-state-metrics

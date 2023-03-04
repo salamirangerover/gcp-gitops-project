@@ -126,13 +126,6 @@ data "kubectl_file_documents" "init_app" {
   content = file("../manifests/_init/init_app.yaml")
 }
 
-resource "kubectl_manifest" "monitoring_namespace" {
-  count              = length(data.kubectl_file_documents.monitoring_namespace.documents)
-  yaml_body          = element(data.kubectl_file_documents.monitoring_namespace.documents, count.index)
-  override_namespace = "argocd"
-}
-
-
 
 resource "kubectl_manifest" "init_app" {
   depends_on = [
@@ -140,6 +133,5 @@ resource "kubectl_manifest" "init_app" {
   ]
   count              = length(data.kubectl_file_documents.init_app.documents)
   yaml_body          = element(data.kubectl_file_documents.init_app.documents, count.index)
-  override_namespace = "monitoring"
 
 }
