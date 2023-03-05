@@ -13,6 +13,7 @@ metadata:
     #
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
+  ingressClassName: "nginx"
   rules:
   - host: argocd.malko2.of.by
     http:
