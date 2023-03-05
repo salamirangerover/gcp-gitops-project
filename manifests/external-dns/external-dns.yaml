@@ -70,10 +70,10 @@ spec:
            env:
              - name: GOOGLE_APPLICATION_CREDENTIALS
                value: /home/gleb/gcp-gitops-project/credentials.json
-           volumeMounts:
-             - name: google-service-account
-               mountPath: /etc/secrets/service-account/
-       volumes:
-         - name: google-service-account
-           secret:
-             secretName: external-dns
+#           volumeMounts:
+#             - name: google-service-account
+#               mountPath: /etc/secrets/service-account/
+#       volumes:
+#         - name: google-service-account
+#           secret:
+#             secretName: external-dns
