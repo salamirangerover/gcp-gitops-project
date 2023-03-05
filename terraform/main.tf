@@ -62,12 +62,24 @@ provider "kubectl" {
   load_config_file       = false
 }
 
+### argocd 
+
 data "kubectl_file_documents" "namespace" {
   content = file("../manifests/argocd/namespace.yaml")
 }
 
 data "kubectl_file_documents" "argocd" {
   content = file("../manifests/argocd/install.yaml")
+}
+
+data "kubectl_file_documents" "ingress" {
+  content = file("../manifests/argocd/ingress.yaml")
+}
+
+resource "kubectl_manifest" "ingress" {
+  count              = length(data.kubectl_file_documents.ingress.documents)
+  yaml_body          = element(data.kubectl_file_documents.ingress.documents, count.index)
+  override_namespace = "argocd"
 }
 
 
@@ -85,22 +97,6 @@ resource "kubectl_manifest" "argocd" {
   yaml_body          = element(data.kubectl_file_documents.argocd.documents, count.index)
   override_namespace = "argocd"
 }
-
-
-### wordpress_app
-
-#data "kubectl_file_documents" "malkoapp-wp" {
-#  content = file("../manifests/wordpress/malkoapp.yaml")
-#}
-
-#resource "kubectl_manifest" "malkoapp-wp" {
-#  depends_on = [
-#    kubectl_manifest.argocd,
-#  ]
-#  count     = length(data.kubectl_file_documents.malkoapp-wp.documents)
-#  yaml_body = element(data.kubectl_file_documents.malkoapp-wp.documents, count.index)
-#}
-
 
 ### init_monitoring_app
 
