@@ -6,10 +6,6 @@ terraform {
       version = ">= 1.7.0"
     }
   }
-  #  backend "gcs" {
-  #    bucket = "terraform-backend-<project-id>"
-  #    prefix = "argocd-terraform"
-  #  }
 }
 
 provider "google" {
