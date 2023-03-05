@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
     targetRevision: master
-    path: manifests/monitoring
+    path: manifests/applications
     directory:
       recurse: true
   destination:

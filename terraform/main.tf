@@ -89,17 +89,17 @@ resource "kubectl_manifest" "argocd" {
 
 ### wordpress_app
 
-data "kubectl_file_documents" "malkoapp-wp" {
-  content = file("../manifests/wordpress/malkoapp.yaml")
-}
+#data "kubectl_file_documents" "malkoapp-wp" {
+#  content = file("../manifests/wordpress/malkoapp.yaml")
+#}
 
-resource "kubectl_manifest" "malkoapp-wp" {
-  depends_on = [
-    kubectl_manifest.argocd,
-  ]
-  count     = length(data.kubectl_file_documents.malkoapp-wp.documents)
-  yaml_body = element(data.kubectl_file_documents.malkoapp-wp.documents, count.index)
-}
+#resource "kubectl_manifest" "malkoapp-wp" {
+#  depends_on = [
+#    kubectl_manifest.argocd,
+#  ]
+#  count     = length(data.kubectl_file_documents.malkoapp-wp.documents)
+#  yaml_body = element(data.kubectl_file_documents.malkoapp-wp.documents, count.index)
+#}
 
 
 ### init_monitoring_app

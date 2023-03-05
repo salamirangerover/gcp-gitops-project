@@ -15,12 +15,34 @@ spec:
     helm:
       values: |
         wordpressUsername: admin
-        wordpressPassword: qwerty
+        wordpressPassword: 123qweASD
         wordpressFirstName: Malko
         wordpressLastName: App
         wordpressBlogName: Blog
+        wordpressEmail: gleb.malko@hoster.by
+
         service:
-          type: LoadBalancer
+          type: ClusterIP
+          ports:
+            http: 80
+            https: 443
+
+        ingress:
+          enabled: true
+          pathType: ImplementationSpecific
+          apiVersion: ""
+          ingressClassName: "nginx"
+          hostname: wp-test.malko.of.by
+          path: /
+          annotations: {}
+
+          tls: false
+
+          selfSigned: false
+
+
+
+
         mariadb:
           enabled: true
           architecture: standalone
