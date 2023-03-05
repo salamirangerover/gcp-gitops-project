@@ -49,13 +49,7 @@ spec:
             database: bitnami_wordpress
             username: bn_wordpress
             password: "mariadb"
-          primary:
-            persistence:
-              enabled: true
-              accessModes:
-                - ReadWriteOnce
-              size: 5Gi
-          
+         
         memcached:
           enabled: true
           auth:
