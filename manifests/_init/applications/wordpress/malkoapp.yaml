@@ -32,7 +32,7 @@ spec:
           pathType: ImplementationSpecific
           apiVersion: ""
           ingressClassName: "nginx"
-          hostname: wp-test.malko.of.by
+          hostname: wordpress.malko2.of.by
           path: /
           annotations: {}
 
