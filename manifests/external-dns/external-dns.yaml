@@ -58,7 +58,7 @@ spec:
           args:
             - --source=service
             - --source=ingress
-            - --domain-filter=example.com # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+            - --domain-filter=malko2.of.by # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
             - --provider=google
             - --log-format=json # google cloud logs parses severity of the "text" log format incorrectly
     #        - --google-project=my-cloud-dns-project # Use this to specify a project different from the one external-dns is running inside
