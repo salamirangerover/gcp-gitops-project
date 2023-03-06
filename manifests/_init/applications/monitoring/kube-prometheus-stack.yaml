@@ -23,6 +23,13 @@ spec:
              failurePolicy: Ignore
 
         grafana:
+          service:
+            type: LoadBalancer
+            ports:
+              http: 80
+              https: 443
+            
+
           ingress:
             enabled: true
             ingressClassName: "nginx"
