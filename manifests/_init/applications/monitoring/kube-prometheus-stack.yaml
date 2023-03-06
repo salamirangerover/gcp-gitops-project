@@ -21,6 +21,22 @@ spec:
         prometheusOperator:
            admissionWebhooks:
              failurePolicy: Ignore
+
+        grafana:
+          ingress:
+            enabled: true
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+            hosts:
+              - grafana.malko2.of.by
+            tls:
+              - secretName: grafana.malko2.of.by-tls
+                hosts:
+                  - grafana.malko2.of.by
+          grafana.ini:
+            server:
+              root_url: https://grafana.malko2.of.by
+
     repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 42.0.3
   syncPolicy:
