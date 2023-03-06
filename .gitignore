@@ -10,7 +10,12 @@ crash.log
 terraform/transaction.yaml
 
 credentials.json
+<<<<<<< HEAD
 gsa.sh
+=======
+#
+
+>>>>>>> cb386510f547906ff89ae1ffa67c198bd181c3a7
 #
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most
 # .tfvars files are managed as part of configuration and so should be included in
