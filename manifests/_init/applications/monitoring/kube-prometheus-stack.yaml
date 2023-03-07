@@ -22,13 +22,12 @@ spec:
            admissionWebhooks:
              failurePolicy: Ignore
 
-        
         grafana:
-#          service:
-#            type: LoadBalancer
-#            ports:
-#              http: 80
-#              https: 443
+          service:
+            type: LoadBalancer
+            ports:
+              http: 80
+              https: 443
             
 
           ingress:
@@ -39,7 +38,7 @@ spec:
             hosts:
               - grafana.malko2.of.by
             tls:
-              - secretName: grafana-tls
+              - secretName: grafana.malko2.of.by-tls
                 hosts:
                   - grafana.malko2.of.by
           grafana.ini:
