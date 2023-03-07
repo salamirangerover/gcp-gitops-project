@@ -22,22 +22,7 @@ spec:
            admissionWebhooks:
              failurePolicy: Ignore
 
-        prometheus:
-          ingress:
-            enabled: true
-            annotations:
-              kubernetes.io/ingress.class: nginx
-            hosts: ['prometheus.malko2.of.by']
-          paths: ['/']
-          tls:
-          - secretName: prometheus-tls
-          hosts:
-          - prometheus.k3s.local
-          
-          prometheusSpec:
-            externalUrl: "https://prometheus.malko2.of.by/"
-            routePrefix: /
-
+        
         grafana:
 #          service:
 #            type: LoadBalancer
