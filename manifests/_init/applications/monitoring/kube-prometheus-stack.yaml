@@ -24,7 +24,7 @@ spec:
 
         grafana:
           service:
-            type: LoadBalancer
+            type: ClusterIP
             ports:
               http: 80
               https: 443
