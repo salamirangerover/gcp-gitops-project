@@ -1,1 +1,1 @@
-# argo-cd-example1
+# gcp-gitops-project
