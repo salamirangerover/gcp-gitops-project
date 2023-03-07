@@ -13,7 +13,7 @@ spec:
     directory:
       recurse: true
   destination:
-    namespace: monitoring
+    namespace: init-app
     server: https://kubernetes.default.svc
   syncPolicy:
     automated:
