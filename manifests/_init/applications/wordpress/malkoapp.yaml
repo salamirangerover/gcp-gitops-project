@@ -29,15 +29,24 @@ spec:
 
         ingress:
           enabled: true
+          certManager: true
           pathType: ImplementationSpecific
           apiVersion: ""
           ingressClassName: "nginx"
           hostname: wordpress.malko2.of.by
           path: /
-          annotations: {}
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          
 
           tls: true
-
+          extraTls:
+            - hosts:
+                - wordpress.malko2.of.by
+                  
+                secretName: wordpress.tls
+          
           selfSigned: false
 
 
