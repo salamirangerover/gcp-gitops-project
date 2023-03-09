@@ -35,7 +35,7 @@ spec:
           ingressClassName: "nginx"
           path: /
           annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-staging
+            cert-manager.io/cluster-issuer: letsencrypt-production
 
           tls: true
           selfSigned: false
