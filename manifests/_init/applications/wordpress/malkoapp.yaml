@@ -33,7 +33,6 @@ spec:
           pathType: ImplementationSpecific
           apiVersion: ""
           ingressClassName: "nginx"
-#          hostname: wordpress.malko2.of.by
           path: /
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-staging
