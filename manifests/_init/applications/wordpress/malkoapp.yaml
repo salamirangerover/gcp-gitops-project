@@ -40,10 +40,6 @@ spec:
 
           tls: true
           selfSigned: false
-          extraTls:
-          - hosts:
-            - wordpress.malko2.of.by
-            secretName: wordpress
 
         mariadb:
           enabled: true
