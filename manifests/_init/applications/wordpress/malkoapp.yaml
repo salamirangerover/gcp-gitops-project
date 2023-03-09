@@ -33,14 +33,17 @@ spec:
           pathType: ImplementationSpecific
           apiVersion: ""
           ingressClassName: "nginx"
-          hostname: wordpress.malko2.of.by
+#          hostname: wordpress.malko2.of.by
           path: /
           annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-prod
+            cert-manager.io/cluster-issuer: letsencrypt-staging
 
           tls: true
           selfSigned: false
-
+          extraTls:
+          - hosts:
+            - wordpress.malko2.of.by
+            secretName: wordpress
 
         mariadb:
           enabled: true
