@@ -37,6 +37,8 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
 
+          hosts:
+            - wordpress.malko2.of.by
           tls: true
           selfSigned: false
           extraTls:
