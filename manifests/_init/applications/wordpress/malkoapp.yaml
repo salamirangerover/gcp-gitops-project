@@ -34,11 +34,10 @@ spec:
           apiVersion: ""
           ingressClassName: "nginx"
           path: /
+          hostname: wordpress.malko2.of.by
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
 
-          hosts:
-            - wordpress.malko2.of.by
           tls: true
           selfSigned: false
           extraTls:
