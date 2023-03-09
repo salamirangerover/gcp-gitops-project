@@ -37,7 +37,10 @@ spec:
               cert-manager.io/cluster-issuer: "grafana-letsencrypt-prod"
             hosts:
               - grafana.malko2.of.by
-            tls: true
+            tls:
+              - secretName: grafana-tls
+                hosts:
+                  - grafana.malko2.of.by
 
           grafana.ini:
             server:
