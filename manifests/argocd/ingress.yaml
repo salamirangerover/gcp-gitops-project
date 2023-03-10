@@ -4,7 +4,7 @@ metadata:
   name: argocdserver-ingress
   namespace: argocd
   annotations:
-    cert-manager.io/cluster-issuer: argocd-letsencrypt-prod
+    cert-manager.io/cluster-issuer: argocd-tls-issuer
     #kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
@@ -28,4 +28,4 @@ spec:
   tls:
   - hosts:
     - argocd.malko2.of.by
-    secretName: argocd-secret # do not change, this is provided by Argo CD
+    secretName: argocd-tls-secret

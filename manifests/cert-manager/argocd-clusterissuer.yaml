@@ -1,15 +1,16 @@
-# issuer-lets-encrypt-staging.yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: argocd-letsencrypt-prod
+  name: argocd-tls-issuer
+  namespace: argocd
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
     email: glebmalko@gmail.com # ❗ Replace this with your email address
     privateKeySecretRef:
-      name: argocd-letsencrypt-prod
+      name: argocd-tls-secret
     solvers:
     - http01:
         ingress:
           name: argocdserver-ingress
+          class: nginx
