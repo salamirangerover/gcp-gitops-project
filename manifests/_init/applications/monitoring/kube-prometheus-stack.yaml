@@ -22,6 +22,26 @@ spec:
            admissionWebhooks:
              failurePolicy: Ignore
 
+        prometheus:
+          service:
+            type: ClusterIP
+            ports:
+              http: 80
+              https: 443
+           
+          ingress:
+            enabled: true
+            ingressClassName: "nginx"
+            annotations:
+              cert-manager.io/cluster-issuer: "prometheus-letsencrypt-prod"
+            hosts:
+              - prometheus.malko2.of.by
+            tls:
+              - secretName: grafana-tls
+                hosts:
+                  - prometheus.malko2.of.by
+
+
         grafana:
           service:
             type: ClusterIP
