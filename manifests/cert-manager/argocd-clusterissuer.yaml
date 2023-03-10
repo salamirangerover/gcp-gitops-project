@@ -13,4 +13,3 @@ spec:
     - http01:
         ingress:
           name: argocdserver-ingress
-          class: nginx
