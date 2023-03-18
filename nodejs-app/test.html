@@ -1,0 +1,9 @@
+<script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.3.0/dist/socket.io.slim.js"></script>
+
+<script>
+  ioClient = io.connect('http://localhost:3002')
+  ioClient.on('connect', socket => {
+    ioClient.send('hello world')
+    ioClient.on('message', msg => console.log(msg))
+  })
+</script>

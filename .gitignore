@@ -5,6 +5,7 @@
 *.tfstate
 *.tfstate.*
 
+debug.log
 # Crash log files
 crash.log
 terraform/transaction.yaml
