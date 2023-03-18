@@ -25,4 +25,4 @@ jobs:
         with:
           context: ./nodejs-app
           push: true
-          tags: user/app:latest
+          tags: salamirangerover/node-web-app:1.2
