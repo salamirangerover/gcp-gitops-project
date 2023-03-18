@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/salamirangerover/gco-gitops-project.git
+    repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
     targetRevision: HEAD
     path: helm-charts/nodejs-app
   destination:
