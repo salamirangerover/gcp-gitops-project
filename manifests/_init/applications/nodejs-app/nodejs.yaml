@@ -1,0 +1,23 @@
+kind: Application
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: nodejs-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/salamirangerover/gco-gitops-project.git
+    targetRevision: HEAD
+    path: helm-charts/nodejs-app
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
