@@ -24,7 +24,7 @@ jobs:
           target: nodejs-app/Dockerfile
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-  docker:
+  build_image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
