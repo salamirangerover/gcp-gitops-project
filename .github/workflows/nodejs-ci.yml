@@ -18,23 +18,30 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           target: nodejs-app/
-      - run: npm ci
+      - run: cd nodejs-app/ && npm ci
       - run: npm run build --if-present
       - run: npm test
 
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: lint
-        uses: luke142367/Docker-Lint-Action@v1.0.0
-        with:
-          target: nodejs-app/Dockerfile
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y terraform-lint yamllint
+
+      - name: Terraform lint
+        run: |
+          terraform fmt -check=true -diff=true
+          tflint --chdir=terraform
+
+      - name: YAML lint
+        run: yamllint manifests/
 
   build_image:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
