@@ -30,7 +30,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y terraform-lint yamllint
+          sudo apt-get install -y yamllint
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
       - name: Terraform lint
         run: |
