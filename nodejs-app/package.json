@@ -8,6 +8,6 @@
     },
     "scripts": {
         "lint": "eslint . --ext js,jsx,ts,tsx --fix",
-        "test": "mocha server.js"
+        "test": "jest"
     }
 }

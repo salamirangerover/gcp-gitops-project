@@ -46,6 +46,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           target: nodejs-app/
+      - run: npm install --save-dev jest
       - run: cd nodejs-app/ && npm test
 
   build_image:
