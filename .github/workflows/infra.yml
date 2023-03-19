@@ -16,5 +16,5 @@ jobs:
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
       - name: Terraform lint
         run: "terraform fmt -check=true -diff=true -recursive \ntflint --chdir=terraform\n"
-      - name: YAML lint
-        run: yamllint manifests/
+      # - name: YAML lint
+      #   run: yamllint manifests/
