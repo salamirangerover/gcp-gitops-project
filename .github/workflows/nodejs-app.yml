@@ -36,12 +36,17 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
     steps:
-      - uses: actions/checkout@v1
-      - name: Run Jest
-        uses: stefanoeb/jest-action@1.0.3
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          jestArgs: nodejs-app/server.js
+          node-version: ${{ matrix.node-version }}
+          target: nodejs-app/
+      - run: cd nodejs-app/ && npm test
 
   build_image:
     needs: test
