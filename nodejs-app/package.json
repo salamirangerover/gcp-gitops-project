@@ -12,6 +12,6 @@
     },
     "scripts": {
         "lint": "eslint . --ext js,jsx,ts,tsx --fix",
-        "test": "mocha"
+        "test": "node server.js"
     }
 }
