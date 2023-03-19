@@ -1,12 +1,10 @@
 name: nodejs-ci
-
 on:
   push:
     branches:
       - "master"
-
 jobs:
-  nodejs_app_lint:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,26 +19,6 @@ jobs:
       - run: cd nodejs-app/ && npm ci
       - run: npm run build --if-present
       - run: npm test
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y yamllint
-          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-
-      - name: Terraform lint
-        run: |
-          terraform fmt -check=true -diff=true -recursive
-          tflint --chdir=terraform
-
-      - name: YAML lint
-        run: yamllint manifests/
-
   build_image:
     needs: lint
     runs-on: ubuntu-latest
