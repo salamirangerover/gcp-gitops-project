@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           target: nodejs-app/
+      - run: cd nodejs-app/ && npm install
       - run: cd nodejs-app/ && npm ci
   build:
     needs: lint
