@@ -16,3 +16,18 @@
 #      run: sed -i "s/<project-id>/${{ secrets.PROJECT_ID }}/g" main.tf && terraform init && terraform apply -auto-approve -var="project_id=${{ secrets.PROJECT_ID  }}"
 #      env:
 #        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
+# REVIEW:
+# Есть 2 варианта:
+# 1. Переехать репой в GitLab, т.к. это платформа более популярна в компаниях которые пишут проприетарный софn
+# 2. Продолжить на GitHub, т.к. это красивее для портфолио
+
+## INFRA
+# linter-ы
+# yamllint
+# terraform lint
+# для применения кода можно попробовать https://www.runatlantis.io/
+
+## APP
+## сделать стандартные стадии пайплайна для софта:
+## lint, build, test, deploy

@@ -1,3 +1,14 @@
+/*
+REVIEW:
+
+По лучшим практикам terraform, следует разделять файлы проекта eg.
+terraform.tf - пин версий терраформа и указания провайдеров
+main.tf - определение провайдеров
+gke.tf - тут создается gke
+kubernetes.tf - тут при помощи провайдера создаются ресурсы в k8s
+data.tf - тут все датасорсы
+*/
+
 terraform {
   required_version = ">= 0.13"
   required_providers {
@@ -79,6 +90,18 @@ module "gke_auth" {
   use_private_endpoint = false
 }
 
+/*
+REVIEW:
+
+Предложу заменить многократные вызовы kubectl провайдера на helm provider,
+Так же все опенсорсные решения перевести на helm с raw манифестов.
+
+Про переменную additionalApplications, не нашел ее в официальном чарте, у нас сторонний
+ref? https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml
+Но кажется, kubectl может применять только gcp-gitops-project/manifests/_init/init_app.yaml
+
+*/
+
 provider "kubectl" {
   host                   = module.gke_auth.host
   cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
@@ -123,6 +146,7 @@ resource "kubectl_manifest" "argocd" {
 }
 
 ### init_monitoring_app
+
 
 data "kubectl_file_documents" "init_app" {
   content = file("../manifests/_init/init_app.yaml")

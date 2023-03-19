@@ -1,4 +1,14 @@
 ---
+# REVIEW:
+# Документация по GAP стеку:
+# https://purple-lettuce-23a.notion.site/Prometheus-Certified-Associate-PCA-f74d585003c24e13887f7ebca76001b6
+# https://karma-git.github.io/Andrew-Horbach.github.io-Public/docs/observability/1-otus-observability
+# 1. Сделать алертинг в какой-нибудь канал, лучше в 2 с разделением алертов
+# 2. Добавить обзор wordpress-а и всех других инфраструктурных компонентов
+# 3. Сделать свое приложение и его тоже мониторить
+# 4. Сделать дашборды в графане по этому делу
+# 5. Реализовать систему сбора и хранения логов, предлагаю grafana loki
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
