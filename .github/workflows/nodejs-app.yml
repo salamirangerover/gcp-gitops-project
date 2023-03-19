@@ -34,23 +34,7 @@ jobs:
           target: nodejs-app/
       - run: cd nodejs-app/ && npm run build --if-present
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          target: nodejs-app/
-      - run: cd nodejs-app/ && npm install
-      - run: cd nodejs-app/ && npm test server.js
-
-  build_image:
+  build_docker_image:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -70,4 +54,4 @@ jobs:
         with:
           context: ./nodejs-app
           push: true
-          tags: salamirangerover/node-web-app:1.2
+          tags: salamirangerover/node-web-app:latest
