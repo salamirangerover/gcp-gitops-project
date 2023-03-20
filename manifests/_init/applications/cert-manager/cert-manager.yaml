@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.jetstack.io
-    chart: jetstack/cert-manager
+    chart: cert-manager/cert-manager
     targetRevision: "1.4.0"
   destination:
     server: https://kubernetes.default.svc
