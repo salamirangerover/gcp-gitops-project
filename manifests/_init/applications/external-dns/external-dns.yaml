@@ -8,18 +8,10 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-    - repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
-      targetRevision: master
-      ref: helmValues
-
-    - repoURL: https://charts.bitnami.com/bitnami
-      chart: external-dns
-      targetRevision: 6.14.4
-      helm:
-        valueFiles:
-          - $helmValues/manifests/_init/applications/external-dns/external-dns-values.yaml
-
+  source:
+    repoURL: https://github.com/salamirangerover/gcp-gitops-project
+    targetRevision: HEAD
+    path: manifests/external-dns
   destination:
     server: https://kubernetes.default.svc
     namespace: default
