@@ -13,11 +13,11 @@ metadata:
     app.kubernetes.io/name: external-dns
 rules:
   - apiGroups: [""]
-    resources: ["services","endpoints","pods","nodes"]
-    verbs: ["get","watch","list"]
-  - apiGroups: ["extensions","networking.k8s.io"]
+    resources: ["services", "endpoints", "pods", "nodes"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["extensions", "networking.k8s.io"]
     resources: ["ingresses"]
-    verbs: ["get","watch","list"]
+    verbs: ["get", "watch", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -39,7 +39,7 @@ kind: Deployment
 metadata:
   name: external-dns
   labels:
-    app.kubernetes.io/name: external-dns  
+    app.kubernetes.io/name: external-dns
 spec:
   strategy:
     type: Recreate
@@ -61,12 +61,12 @@ spec:
             - --domain-filter=malko2.of.by # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
             - --provider=google
             - --log-format=json # google cloud logs parses severity of the "text" log format incorrectly
-    #        - --google-project=my-cloud-dns-project # Use this to specify a project different from the one external-dns is running inside
+            #        - --google-project=my-cloud-dns-project # Use this to specify a project different from the one external-dns is running inside
             - --google-zone-visibility=public # Use this to filter to only zones with this visibility. Set to either 'public' or 'private'. Omitting will match public and private zones
             - --policy=upsert-only # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
             - --registry=txt
             - --txt-owner-id=my-identifier
-      #     # uncomment below if static credentials are used  
+      #     # uncomment below if static credentials are used
       #     env:
       #       - name: GOOGLE_APPLICATION_CREDENTIALS
       #         value: /etc/secrets/service-account/credentials.json
