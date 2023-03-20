@@ -22,7 +22,7 @@ terraform {
 provider "google" {
   project = var.project_id
   region  = var.region
-  zone    = var.location
+  zone = var.location
 }
 
 provider "helm" {
