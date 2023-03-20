@@ -10,7 +10,7 @@ debug.log
 crash.log
 terraform/transaction.yaml
 credentials.json
-.terraform.lock.hcl
+terraform/.terraform.lock.hcl
 <<<<<<< HEAD
 =======
 #
