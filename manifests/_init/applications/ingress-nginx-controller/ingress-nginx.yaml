@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://helm.nginx.com/stable
-    chart: nginx-stable
-    targetRevision: "0.16.2"
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: "4.5.2"
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx
