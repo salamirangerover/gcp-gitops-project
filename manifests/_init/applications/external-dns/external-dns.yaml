@@ -2,23 +2,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: external-dns123
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/salamirangerover/gcp-gitops-project
-    targetRevision: HEAD
-    path: manifests/external-dns
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    chart: external-dns
+    targetRevision: "1.12.1"
+    helm:
+      values: |
+        sources: [service, ingress]
+        domainFilters: [malko2.of.by]
+        logFormat: json
+        policy: upsert-only
+        registry: txt
+        txtOwnerId: "gmalko"
+
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
   syncPolicy:
     automated:
-      selfHeal: true
-      prune: true
-    syncOptions:
-      - ServerSideApply=true
-      - CreateNamespace=true
+      selfHeal: false
+      prune: false

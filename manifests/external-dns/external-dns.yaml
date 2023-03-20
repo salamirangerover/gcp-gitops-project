@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -58,22 +59,10 @@ spec:
           args:
             - --source=service
             - --source=ingress
-            - --domain-filter=malko2.of.by # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+            - --domain-filter=malko2.of.by
             - --provider=google
-            - --log-format=json # google cloud logs parses severity of the "text" log format incorrectly
-            #        - --google-project=my-cloud-dns-project # Use this to specify a project different from the one external-dns is running inside
-            - --google-zone-visibility=public # Use this to filter to only zones with this visibility. Set to either 'public' or 'private'. Omitting will match public and private zones
-            - --policy=upsert-only # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
+            - --log-format=json
+            - --google-zone-visibility=public
+            - --policy=upsert-only
             - --registry=txt
             - --txt-owner-id=my-identifier
-      #     # uncomment below if static credentials are used
-      #     env:
-      #       - name: GOOGLE_APPLICATION_CREDENTIALS
-      #         value: /etc/secrets/service-account/credentials.json
-      #     volumeMounts:
-      #       - name: google-service-account
-      #         mountPath: /etc/secrets/service-account/
-      # volumes:
-      #   - name: google-service-account
-      #     secret:
-      #       secretName: external-dns
