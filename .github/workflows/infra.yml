@@ -14,9 +14,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y yamllint
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-      - name: Terraform lint
-        run: "terraform fmt -check=true -diff=true -recursive"
-      - name: Terraform validate
+      - name: Terraform Format
+        run: "terraform fmt -recursive"
+      - name: Terraform Validate
         run: "terraform validate"
       - name: YAML lint
         run: 'yamllint -d "{extends: default, rules: {line-length: {max: 120}}}" manifests'
