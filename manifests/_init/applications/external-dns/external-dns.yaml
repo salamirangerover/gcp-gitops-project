@@ -1,3 +1,4 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,25 +8,17 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: external-dns
-    targetRevision: 6.14.4
-    helm:
-      values: |
-        sources:
-          - service
-          - ingress
-        domainFilters: malko2.of.by
-        logFormat: json
+  sources:
+    - repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
+      targetRevision: master
+      ref: helmValues
 
-        google:
-          project:salamirangerover
-          zoneType: public
-
-        policy: upsert-only
-        registry: "txt"
-        txtOwnerId: "gmalko"
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: external-dns
+      targetRevision: 6.14.4
+      helm:
+        valueFiles:
+          - $helmValues/manifests/_init/applications/external-dns/external-dns-values.yaml
 
   destination:
     server: https://kubernetes.default.svc
