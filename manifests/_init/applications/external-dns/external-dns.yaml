@@ -16,14 +16,16 @@ spec:
         sources:
           - service
           - ingress
-          - --domain-filter=malko2.of.by 
-          - --provider=google
-          - --log-format=json 
-          - --google-project=salamirangerover
-          - --google-zone-visibility=public
-          - --policy=upsert-only
-          - --registry=txt
-          - --txt-owner-id=gmalko
+        domainFilters: malko2.of.by
+        logFormat: json
+
+        google:
+          project:salamirangerover
+          zoneType: public
+
+        policy: upsert-only
+        registry: "txt"
+        txtOwnerId: "gmalko"
 
   destination:
     server: https://kubernetes.default.svc
