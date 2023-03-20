@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   name: kube-prometheus-stack
   namespace: argocd
 spec:
@@ -28,7 +28,6 @@ spec:
             ports:
               http: 80
               https: 443
-           
           ingress:
             enabled: true
             ingressClassName: "nginx"
@@ -40,16 +39,12 @@ spec:
               - secretName: grafana-tls
                 hosts:
                   - alertmanager.malko2.of.by
-
-
-
         prometheus:
           service:
             type: ClusterIP
             ports:
               http: 80
               https: 443
-           
           ingress:
             enabled: true
             ingressClassName: "nginx"
@@ -69,8 +64,6 @@ spec:
             ports:
               http: 80
               https: 443
-            
-
           ingress:
             enabled: true
             ingressClassName: "nginx"
@@ -94,6 +87,5 @@ spec:
       selfHeal: false
       prune: false
     syncOptions:
-    - ServerSideApply=true
-    - CreateNamespace=true
-
+      - ServerSideApply=true
+      - CreateNamespace=true
