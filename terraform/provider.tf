@@ -5,9 +5,10 @@ terraform {
       source  = "hashicorp/google"
       version = ">=4.47.0"
     }
-    # gke_auth = {
-    #   version = "25.0.0"
-    # }
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.8.0"
+    }
     time = {
       version = "0.9.1"
     }
@@ -23,3 +24,19 @@ provider "google" {
   region  = var.region
   zone    = var.location
 }
+
+provider "helm" {
+  kubernetes {
+    host                   = module.gke_auth.host
+    cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
+    token                  = module.gke_auth.token
+  }
+}
+
+provider "kubectl" {
+  host                   = module.gke_auth.host
+  cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
+  token                  = module.gke_auth.token
+  load_config_file       = false
+}
+
