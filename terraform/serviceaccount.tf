@@ -1,6 +1,6 @@
 resource "google_service_account" "main" {
-  account_id   = "${var.cluster_name}-sa"
-  display_name = "GKE Cluster ${var.cluster_name} Service Account"
+  account_id   = "${local.cluster_name}-sa"
+  display_name = "GKE Cluster ${local.cluster_name} Service Account"
 }
 
 resource "google_project_iam_binding" "project" {
@@ -9,7 +9,8 @@ resource "google_project_iam_binding" "project" {
     "roles/monitoring.metricWriter",
     "roles/monitoring.viewer",
     "roles/stackdriver.resourceMetadata.writer",
-    "roles/dns.admin"
+    "roles/dns.admin",
+    "roles/storage.objectAdmin"
   ])
 
   project = var.project_id

@@ -1,6 +1,6 @@
 resource "google_container_cluster" "main" {
-  name               = var.cluster_name
-  location           = var.location
+  name               = local.cluster_name
+  location           = local.location
   initial_node_count = 3
   node_config {
     service_account = google_service_account.main.email
@@ -27,6 +27,6 @@ module "gke_auth" {
   source               = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   project_id           = var.project_id
   cluster_name         = google_container_cluster.main.name
-  location             = var.location
+  location             = local.location
   use_private_endpoint = false
 }
