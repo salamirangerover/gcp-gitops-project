@@ -8,13 +8,16 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
-    targetRevision: v1.8.2
-    helm:
-      values: |-
-        installCRDs: true
+  sources:
+    - repoURL: https://github.com/salamirangerover/gcp-gitops-project
+      path: manifests/applications/cert-manager/cluster-issuers
+      targetRevision: HEAD
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: v1.8.2
+      helm:
+        values: |-
+          installCRDs: true
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
