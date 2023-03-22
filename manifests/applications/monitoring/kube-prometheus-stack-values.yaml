@@ -206,13 +206,14 @@ prometheusOperator:
 
   # NOTE: operator requirement
   admissionWebhooks:
-    enabled: true
-    patch:
-      enabled: true
-      image:
-        registry: registry.k8s.io
-        repository: ingress-nginx/kube-webhook-certgen
-        tag: "v20221220-controller-v1.5.1-58-g787ea74b6"
+    failurePolicy: Ignore
+    # enabled: true
+    # patch:
+    #   enabled: true
+    #   image:
+    #     registry: registry.k8s.io
+    #     repository: ingress-nginx/kube-webhook-certgen
+    #     tag: "v20221220-controller-v1.5.1-58-g787ea74b6"
 
   # NOTE: operator resources
   resources:
