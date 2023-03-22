@@ -18,7 +18,7 @@ spec:
       targetRevision: "42.0.3"
       helm:
         valueFiles:
-          - $helmValues/manifests/_init/applications/monitoring/kube-prometheus-stack-values.yml
+          - $helmValues/manifests/applications/monitoring/kube-prometheus-stack-values.yml
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
