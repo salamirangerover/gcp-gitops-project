@@ -6,7 +6,7 @@ resource "helm_release" "argocd" {
   chart            = "argo-cd"
   namespace        = "argocd"
   create_namespace = true
-  version          = "4.9.7"
+  version          = "5.17.0"
 
 }
 
