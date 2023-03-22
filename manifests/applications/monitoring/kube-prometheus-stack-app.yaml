@@ -27,5 +27,5 @@ spec:
       selfHeal: true
       prune: true
     syncOptions:
-      # - ServerSideApply=true  # TODO: inspect this param
       - CreateNamespace=true
+      - ServerSideApply=true

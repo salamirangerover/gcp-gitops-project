@@ -24,6 +24,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
+    namespace: external-dns
   syncPolicy:
     automated:
       selfHeal: false
