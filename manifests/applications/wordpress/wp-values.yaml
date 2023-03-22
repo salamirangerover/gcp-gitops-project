@@ -1,0 +1,38 @@
+---
+wordpressUsername: admin
+wordpressPassword: 123qweASD
+wordpressFirstName: Malko
+wordpressLastName: App
+wordpressBlogName: Blog
+wordpressEmail: gleb.malko@hoster.by
+service:
+  type: ClusterIP
+  ports:
+    http: 80
+    https: 443
+ingress:
+  enabled: true
+  certManager: true
+  pathType: ImplementationSpecific
+  apiVersion: ""
+  ingressClassName: "nginx"
+  path: /
+  hostname: wordpress.malko2.of.by
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  tls: true
+  selfSigned: false
+mariadb:
+  enabled: true
+  architecture: standalone
+  auth:
+    rootPassword: "mariadb"
+    database: bitnami_wordpress
+    username: bn_wordpress
+    password: "mariadb"
+memcached:
+  enabled: true
+  auth:
+    enabled: true
+    username: "admin"
+    password: "qwerty"
