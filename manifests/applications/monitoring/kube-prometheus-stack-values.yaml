@@ -289,7 +289,7 @@ prometheus:
     nodeSelector: {}
 
     retention: 30d
-    retentionSize: "85Gb" # NOTE: 85% of PV
+    retentionSize: "15Gb" # NOTE: 85% of PV
 
     walCompression: true
     paused: false
