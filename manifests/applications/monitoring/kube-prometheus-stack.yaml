@@ -32,7 +32,7 @@ spec:
             enabled: true
             ingressClassName: "nginx"
             annotations:
-              cert-manager.io/cluster-issuer: "prometheus-letsencrypt-prod"
+              cert-manager.io/cluster-issuer: "grafana-letsencrypt-prod"
             hosts:
               - alertmanager.malko2.of.by
             tls:
@@ -49,7 +49,7 @@ spec:
             enabled: true
             ingressClassName: "nginx"
             annotations:
-              cert-manager.io/cluster-issuer: "prometheus-letsencrypt-prod"
+              cert-manager.io/cluster-issuer: "grafana-letsencrypt-prod"
             hosts:
               - prometheus.malko2.of.by
             tls:
