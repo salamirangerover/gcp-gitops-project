@@ -2,14 +2,14 @@
 kind: Application
 apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: init-app
+  name: user-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
     targetRevision: master
-    path: manifests/infrastracture
+    path: manifests/user_applications
     directory:
       recurse: true
   destination:

@@ -11,7 +11,7 @@ resource "helm_release" "argocd" {
 
 }
 
-### init_argocd_app
+### infrastructure_apps
 data "kubectl_file_documents" "init_app" {
   content = file("../manifests/_init/init_app.yaml")
 }
@@ -23,5 +23,20 @@ resource "kubectl_manifest" "init_app" {
   ]
   count     = length(data.kubectl_file_documents.init_app.documents)
   yaml_body = element(data.kubectl_file_documents.init_app.documents, count.index)
+
+}
+
+### user_apps
+data "kubectl_file_documents" "user_app" {
+  content = file("../manifests/_init/user_app.yaml")
+}
+
+
+resource "kubectl_manifest" "user_app" {
+  depends_on = [
+    helm_release.argocd, kubectl_manifest.init_app,
+  ]
+  count     = length(data.kubectl_file_documents.user_app.documents)
+  yaml_body = element(data.kubectl_file_documents.user_app.documents, count.index)
 
 }
