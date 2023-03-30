@@ -17,7 +17,7 @@ spec:
       targetRevision: "15.2.2"
       helm:
         valueFiles:
-          - $helmValues/manifests/applications/wordpress/wp-values.yaml
+          - $helmValues/manifests/user_applications/wordpress/wp-values.yaml
   destination:
     namespace: default
     server: https://kubernetes.default.svc
