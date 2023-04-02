@@ -10,7 +10,8 @@ resource "google_project_iam_binding" "project" {
     "roles/monitoring.viewer",
     "roles/stackdriver.resourceMetadata.writer",
     "roles/dns.admin",
-    "roles/storage.objectAdmin"
+    "roles/storage.objectAdmin",
+    "roles/iam.workloadIdentityUser"
   ])
 
   project = var.project_id
