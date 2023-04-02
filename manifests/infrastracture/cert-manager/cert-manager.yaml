@@ -25,3 +25,8 @@ spec:
     syncOptions:
       - ServerSideApply=true
       - CreateNamespace=true
+  info:
+    - name: Artifact Hub
+      value: "https://artifacthub.io/packages/helm/cert-manager/cert-manager"
+    - name: GitHub
+      value: "https://github.com/cert-manager/cert-manager"
